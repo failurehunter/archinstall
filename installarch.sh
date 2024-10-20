@@ -42,6 +42,21 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt
 
+echo "liquorix"
+pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D
+pacman-key --lsign-key 9AE4078033F8024D
+
+echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch' | sudo tee -a '/etc/pacman.conf' > /dev/null
+
+echo "chaotic-aur"
+pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key 3056513887B78AEB
+
+pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst'
+pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
+
+echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a '/etc/pacman.conf' > /dev/null
+
 echo $HOST > /etc/hostname
 echo -e "127.0.0.1 localhost\n::0 localhost\n127.0.0.1 $HOST" >> /etc/hosts
 
@@ -62,10 +77,11 @@ passwd $USER
 echo "$USER ALL=(ALL:ALL) ALL" >> /etc/sudoers
 visudo -c
 
-sudo pacman -S grub
+sudo pacman -Sy grub
 
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
+sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter xorg network-manager-applet
 exit
 umount -R /mnt

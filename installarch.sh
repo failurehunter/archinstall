@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Запрос данных для переменных
 read -p "username (USER): " USER
@@ -6,7 +6,7 @@ read -p "hostname (HOST): " HOST
 read -p "path to install (e.g., /dev/sda1): " PATH
 
 pacman -Sy
-pacman -S archlinux-keyring
+pacman -S archlinux-keyring --no-confirm
 
 mkfs.btrfs -L arch $PATH
 mount $PATH /mnt
@@ -35,9 +35,11 @@ pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.
 
 echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a '/etc/pacman.conf' > /dev/null
 
+sudo sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf
+
 pacman -Sy
 
-pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager intel-ucode git nano curl wget
+pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager intel-ucode git nano curl wget zsh yay --no-confirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt
@@ -57,6 +59,8 @@ pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.
 
 echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a '/etc/pacman.conf' > /dev/null
 
+sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf
+
 echo $HOST > /etc/hostname
 echo -e "127.0.0.1 localhost\n::0 localhost\n127.0.0.1 $HOST" >> /etc/hosts
 
@@ -72,7 +76,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
 passwd
 
-useradd -m $USER
+useradd -mG wheel -s /usr/bin/zsh $USER
 passwd $USER
 echo "$USER ALL=(ALL:ALL) ALL" >> /etc/sudoers
 visudo -c
@@ -82,6 +86,6 @@ sudo pacman -Sy grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter xorg network-manager-applet
+sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter xorg network-manager-applet --no-confirm --needed
 exit
 umount -R /mnt

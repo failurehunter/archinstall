@@ -86,6 +86,6 @@ sudo pacman -Sy grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter xorg network-manager-applet --no-confirm --needed
+sudo pacman -S xfce4 xfce4-goodies lightdm lightdm-gtk-greeter xorg network-manager-applet
 exit
 umount -R /mnt

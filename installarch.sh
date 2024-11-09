@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Запрос данных для переменных
 read -p "username (USER): " USER

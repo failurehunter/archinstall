@@ -1,24 +1,26 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+export PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 # Запрос данных для переменных
 read -p "username (USER): " USER
 read -p "hostname (HOST): " HOST
-read -p "path to install (e.g., /dev/sda1): " PATH
+read -p "path to install (e.g., /dev/sda1): " DRIVE
 
 pacman -Sy
 pacman -S archlinux-keyring --noconfirm
 
-mkfs.btrfs -L arch $PATH
-mount $PATH /mnt
+mkfs.btrfs -L arch $DRIVE
+mount $DRIVE /mnt
 
 btrfs su cr /mnt/@
 btrfs su cr /mnt/@home
 
 umount -R /mnt
 
-mount -o subvol=/@,noatime,compress=lzo $PATH /mnt
+mount -o subvol=/@,noatime,compress=lzo $DRIVE /mnt
 mkdir /mnt/home
-mount -o subvol=/@home,noatime,compress=lzo $PATH /mnt/home
+mount -o subvol=/@home,noatime,compress=lzo $DRIVE /mnt/home
 
 pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D 3056513887B78AEB
 pacman-key --lsign-key 9AE4078033F8024D 3056513887B78AEB
@@ -68,12 +70,7 @@ sudo pacman -Sy grub
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-sudo pacman -S xfce4 (garcon thunar thunar-volman tumbler xfce4-appfinder 
-xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xfwm4) [2,3,4,5,6,7,8,9,10,11,12,13]
- 
-xfce4-goodies (mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin 
-xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin) [1, 5, 8, 9, 24, 30, 36]
-
+sudo pacman -S xfce4 garcon thunar thunar-volman tumbler xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xfwm4 mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin
 sudo pacman -S lightdm lightdm-gtk-greeter st xorg network-manager-applet --needed
 exit
 umount -R /mnt

@@ -33,7 +33,7 @@ sudo sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf
 
 pacman -Sy
 
-pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl wget zsh yay --needed --noconfirm
+pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl zsh aura --needed --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt
@@ -74,6 +74,6 @@ xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xf
 xfce4-goodies (mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin 
 xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin) [1, 5, 8, 9, 24, 30, 36]
 
-sudo pacman -S lightdm lightdm-gtk-greeter xorg network-manager-applet --needed
+sudo pacman -S lightdm lightdm-gtk-greeter st xorg network-manager-applet --needed
 exit
 umount -R /mnt

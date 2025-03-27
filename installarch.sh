@@ -30,14 +30,14 @@ echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch\n[cha
 
 pacman -Sy
 
-pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl zsh aura --needed --noconfirm
+pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl zsh paru --needed --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt bash -c "
 echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/\$repo/\$arch\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | tee -a /etc/pacman.conf > /dev/null &&
 sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf &&
-echo \$HOST > /etc/hostname &&
-echo -e '127.0.0.1 localhost\n::0 localhost\n127.0.0.1 \$HOST' >> /etc/hosts &&
+echo '$HOST' > /etc/hostname &&
+echo -e '127.0.0.1 localhost\n::0 localhost\n127.0.0.1 $HOST' >> /etc/hosts &&
 systemctl enable NetworkManager &&
 systemctl mask NetworkManager-wait-online.service &&
 ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime &&
@@ -47,16 +47,17 @@ locale-gen &&
 echo 'LANG=en_US.UTF-8' > /etc/locale.conf &&
 echo 'Set root password' &&
 passwd &&
-useradd -mG wheel -s /bin/zsh \$USER &&
-echo 'Set password for user \$USER' &&
-passwd \$USER &&
-echo '\$USER ALL=(ALL:ALL) ALL' >> /etc/sudoers &&
+useradd -mG wheel -s /bin/zsh '$USER' &&
+echo 'Set password for user $USER' &&
+passwd '$USER' &&
+echo '$USER ALL=(ALL:ALL) ALL' >> /etc/sudoers &&
 visudo -c &&
-sudo pacman -Sy grub --noconfirm &&
+pacman -Sy grub --noconfirm &&
 grub-install /dev/sda &&
 grub-mkconfig -o /boot/grub/grub.cfg &&
-sudo pacman -S garcon thunar thunar-volman tumbler xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xfwm4 mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin --noconfirm &&
-sudo pacman -S lightdm lightdm-gtk-greeter st xorg network-manager-applet --needed --noconfirm
+pacman -S garcon thunar thunar-volman tumbler xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xfwm4 mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin --noconfirm &&
+pacman -S lightdm lightdm-gtk-greeter st xorg network-manager-applet --needed --noconfirm &&
+systemctl enable lightdm.service
 "
 
 umount -R /mnt

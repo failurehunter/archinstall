@@ -58,6 +58,18 @@ grub-mkconfig -o /boot/grub/grub.cfg &&
 pacman -S garcon thunar thunar-volman tumbler xfce4-appfinder xfce4-panel xfce4-power-manager xfce4-session xfce4-settings xfconf xfdesktop xfwm4 mousepad thunar-media-tags-plugin xfce4-battery-plugin xfce4-clipman-plugin xfce4-pulseaudio-plugin xfce4-taskmanager xfce4-whiskermenu-plugin --noconfirm &&
 pacman -S lightdm lightdm-gtk-greeter st xorg network-manager-applet --needed --noconfirm &&
 systemctl enable lightdm.service
+
+# Загрузка конфигов XFCE4
+mkdir -p /etc/xdg/xfce4-configs &&
+curl -L 'https://raw.githubusercontent.com/DavidsTens/archinstall/refs/heads/main/xfce4-configs/xfce4-panel.xml' -o /etc/xdg/xfce4-configs/xfce4-panel.xml &&
+curl -L 'https://raw.githubusercontent.com/DavidsTens/archinstall/refs/heads/main/xfce4-configs/xfce4-desktop.xml' -o /etc/xdg/xfce4-configs/xfce4-desktop.xml &&
+
+# Копирование конфигов в домашнюю папку пользователя
+mkdir -p /home/$USER/.config/xfce4/xfconf/xfce-perchannel-xml &&
+cp /etc/xdg/xfce4-configs/xfce4-panel.xml /home/$USER/.config/xfce4/xfconf/xfce-perchannel-xml/ &&
+cp /etc/xdg/xfce4-configs/xfce4-desktop.xml /home/$USER/.config/xfce4/xfconf/xfce-perchannel-xml/ &&
+chown -R $USER:$USER /home/$USER/.config/xfce4 &&
+echo 'XFCE4 configuration applied successfully.'
 "
 
 umount -R /mnt

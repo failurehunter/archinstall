@@ -1,7 +1,7 @@
 # fast as usual
 script for installing arch from under liveusb arch
 ```bash
-bash <(curl -SL https://raw.githubusercontent.com/DavidsTens/archinstall/refs/heads/main/installarch.sh)
+bash <(curl -SL https://raw.githubusercontent.com/failurehunter/archinstall/refs/heads/main/installarch.sh)
 ```
 ### what's inside:
  - [xfce4](https://www.xfce.org)

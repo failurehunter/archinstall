@@ -13,9 +13,7 @@ pacman -S archlinux-keyring --noconfirm
 mkfs.ext4 -L arch $DRIVE
 mount $DRIVE /mnt
 
-umount -R /mnt
-
-mount -o -o noatime,commit=60 $DRIVE /mnt
+mount -o noatime,commit=60 $DRIVE /mnt
 mkdir /mnt/home
 mount -o noatime,commit=60 $DRIVE /mnt/home
 

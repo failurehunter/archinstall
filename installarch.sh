@@ -25,7 +25,7 @@ echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch\n[cha
 
 pacman -Sy
 
-pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl zsh paru --needed --noconfirm
+pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware-intel linux-firmware-broadcom linux-firmware-atheros networkmanager chaotic-keyring chaotic-mirrorlist intel-ucode git nano curl zsh paru --needed --noconfirm
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt bash -c "

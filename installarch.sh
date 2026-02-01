@@ -10,17 +10,14 @@ read -p "path to install (e.g., /dev/sda1): " DRIVE
 pacman -Sy
 pacman -S archlinux-keyring --noconfirm
 
-mkfs.btrfs -f -L arch $DRIVE
+mkfs.ext4 -f -L arch $DRIVE
 mount $DRIVE /mnt
-
-btrfs su cr /mnt/@
-btrfs su cr /mnt/@home
 
 umount -R /mnt
 
-mount -o subvol=/@,noatime,compress=lzo $DRIVE /mnt
+mount -o -o noatime,commit=60,discard=async $DRIVE /mnt
 mkdir /mnt/home
-mount -o subvol=/@home,noatime,compress=lzo $DRIVE /mnt/home
+mount -o noatime,commit=60,discard=async $DRIVE /mnt/home
 
 pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D 3056513887B78AEB
 pacman-key --lsign-key 9AE4078033F8024D 3056513887B78AEB

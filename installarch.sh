@@ -10,7 +10,7 @@ read -p "path to install (e.g., /dev/sda1): " DRIVE
 pacman -Sy
 pacman -S archlinux-keyring --noconfirm
 
-mkfs.ext4 -f -L arch $DRIVE
+mkfs.ext4 -L arch $DRIVE
 mount $DRIVE /mnt
 
 umount -R /mnt

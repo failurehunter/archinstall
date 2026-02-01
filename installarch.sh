@@ -21,7 +21,7 @@ pacman-key --keyserver hkps://keyserver.ubuntu.com --recv-keys 9AE4078033F8024D 
 pacman-key --lsign-key 9AE4078033F8024D 3056513887B78AEB
 
 pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
-echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/$repo/$arch\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf > /dev/null && sudo sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf
+echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | sudo tee -a /etc/pacman.conf > /dev/null && sudo sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf
 
 pacman -Sy
 
@@ -29,7 +29,7 @@ pacstrap /mnt base base-devel linux-lqx linux-lqx-headers linux-firmware-intel l
 genfstab -U /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt bash -c "
-echo -e '\n[liquorix]\nServer = https://liquorix.net/archlinux/\$repo/\$arch\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | tee -a /etc/pacman.conf > /dev/null &&
+echo -e '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist' | tee -a /etc/pacman.conf > /dev/null &&
 sed -i 's/^#*\(ParallelDownloads\s*=\s*\).*/\110/' /etc/pacman.conf &&
 echo '$HOST' > /etc/hostname &&
 echo -e '127.0.0.1 localhost\n::0 localhost\n127.0.0.1 $HOST' >> /etc/hosts &&
